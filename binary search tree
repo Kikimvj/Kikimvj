@@ -1,0 +1,90 @@
+#include<stdlib.h>
+#include<stdio.h>
+
+struct myNode{
+int myData;
+struct myNode *left;
+struct myNode *right;
+}; 
+
+struct myNode *tree;
+
+struct myNode createData(struct myNode tree, int val){
+struct myNode ptr, myNodeptr, *parentptr;
+ptr = (struct myNode*)malloc(sizeof(struct myNode));
+ptr->myData = val;
+ptr->left = NULL;
+ptr->right = NULL;
+if(tree == NULL){
+tree = ptr;
+tree->left = NULL;
+tree->right = NULL;
+}
+else{
+parentptr = NULL;
+myNodeptr = tree;
+while(myNodeptr != NULL){
+parentptr = myNodeptr;
+if(val < myNodeptr->myData){
+myNodeptr=myNodeptr->left;
+}
+else{
+myNodeptr = myNodeptr->right;
+}
+}
+if(val < parentptr->myData){
+parentptr->left = ptr;
+}
+else{
+parentptr->right = ptr;
+}
+}
+return tree;
+}
+
+void preOrderTraversal(struct myNode *tree){
+if(tree != NULL){
+printf(" %d ", tree->myData);
+preOrderTraversal(tree->left);
+preOrderTraversal(tree->right);
+}
+}
+
+void inOrderTraversal(struct myNode *tree){
+if(tree != NULL){
+inOrderTraversal(tree->left);
+printf(" %d ", tree->myData);
+inOrderTraversal(tree->right);
+}
+}
+
+void postOrderTraversal(struct myNode *tree){
+if(tree != NULL){
+postOrderTraversal(tree->left);
+postOrderTraversal(tree->right);
+printf(" %d ", tree->myData);
+}
+}
+
+void createTree(struct myNode *tree){
+tree = NULL;
+printf("\n Data kosong\n");
+}
+
+int main(){
+int myArray[] = {13, 27, 83, 67, 1, 90, 37, 40, 62, 102, 53, 72, 34, 21, 20};
+createTree(tree);
+printf("\n Masukkan array pada soal \n");
+for(int i = 0; i < sizeof(myArray) / sizeof(myArray[0]); i++){ 
+tree = createData(tree, myArray[i]);
+}
+printf("\n Data PreOrder Traversal: \n");
+preOrderTraversal(tree);
+printf("\n");
+printf("\n Data InOrder Traversal: \n");
+inOrderTraversal(tree);
+printf("\n");
+printf("\n Data PostOrder Traversal: \n");
+postOrderTraversal(tree);
+return 0;
+}
