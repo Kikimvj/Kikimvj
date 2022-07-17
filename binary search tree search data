@@ -1,0 +1,104 @@
+#include<stdlib.h>
+#include<stdio.h>
+
+struct myNode{
+int myData;
+struct myNode *left;
+struct myNode *right;
+}; 
+
+struct myNode *tree;
+
+struct myNode createData(struct myNode tree, int val){
+struct myNode ptr, myNodeptr, *parentptr;
+ptr = (struct myNode*)malloc(sizeof(struct myNode));
+ptr->myData = val;
+ptr->left = NULL;
+ptr->right = NULL;
+if(tree == NULL){
+tree = ptr;
+tree->left = NULL;
+tree->right = NULL;
+}
+else{
+parentptr = NULL;
+myNodeptr = tree;
+while(myNodeptr != NULL){
+parentptr = myNodeptr;
+if(val < myNodeptr->myData){
+myNodeptr=myNodeptr->left;
+}
+else{
+myNodeptr = myNodeptr->right;
+}
+}
+if(val < parentptr->myData){
+parentptr->left = ptr;
+}
+else{
+parentptr->right = ptr;
+}
+}
+return tree;
+}
+
+void preOrderTraversal(struct myNode *tree){
+if(tree != NULL){
+printf(" %d ", tree->myData);
+preOrderTraversal(tree->left);
+preOrderTraversal(tree->right);
+}
+}
+
+void inOrderTraversal(struct myNode *tree){
+if(tree != NULL){
+inOrderTraversal(tree->left);
+printf(" %d ", tree->myData);
+inOrderTraversal(tree->right);
+}
+}
+
+void postOrderTraversal(struct myNode *tree){
+if(tree != NULL){
+postOrderTraversal(tree->left);
+postOrderTraversal(tree->right);
+printf(" %d ", tree->myData);
+}
+}
+
+void create_tree(struct myNode *tree){
+tree = NULL;
+printf("\n Data kosong\n");
+}
+
+struct myNode searchNode(struct myNode tree, int x)
+{
+if(tree==NULL || tree->myData==x) { //if root->data is x then the element is found
+printf(" Data ditemukan \n");
+return tree;
+} else if(x>tree->myData) { // x is greater, so we will search the right subtree
+return searchNode(tree->right, x);
+} else if(x<tree->myData) { //x is smaller than the data, so we will search the left subtree
+return searchNode(tree->left, x);
+} else {
+printf(" Data tidak ditemukan \n");
+}
+}
+
+int main(){
+int myArray[] = {117, 34, 92, 250, 11, 7, 82, 920, 113, 27, 20, 500, 31, 29, 720};
+create_tree(tree);
+printf("\n Masukkan array pada soal \n");
+for(int i = 0; i < sizeof(myArray) / sizeof(myArray[0]); i++){ 
+tree = createData(tree, myArray[i]);
+}
+printf(" Data InOrder Traversal: \n");
+inOrderTraversal(tree);
+
+printf("\n\n Cari angka 113: \n");
+printf(" Hasil: ");
+tree = searchNode(tree, 113);
+printf("\n\n");
+
+return 0;
+}
